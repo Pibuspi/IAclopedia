@@ -42,13 +42,24 @@ export type PromptItem = {
   tools: string[];
 };
 
+export type RankingItem = {
+  id: string;
+  name: string;
+  category: string;
+  score: number;
+  summary: string;
+};
+
 export type AppData = {
   tools: Tool[];
   posts: NewsItem[];
   videos: VideoItem[];
   prompts: PromptItem[];
+  ranking: RankingItem[];
   favorites: string[];
 };
+
+export const APP_DATA_EVENT = "app-data-updated";
 
 export const defaultAppData: AppData = {
   tools: [
@@ -192,26 +203,41 @@ export const defaultAppData: AppData = {
       tools: ["ChatGPT", "Gemini"],
     },
   ],
+  ranking: [],
   favorites: [],
 };
 
 export const STORAGE_KEY = "iaclopedia-data";
 
-export function loadAppData(): AppData | null {
-  if (typeof window === "undefined") return null;
+function normalizeAppData(data: Partial<AppData> | null | undefined): AppData {
+  const safeData = data ?? {};
+  return {
+    tools: safeData.tools ?? defaultAppData.tools,
+    posts: safeData.posts ?? defaultAppData.posts,
+    videos: safeData.videos ?? defaultAppData.videos,
+    prompts: safeData.prompts ?? defaultAppData.prompts,
+    ranking: safeData.ranking ?? defaultAppData.ranking,
+    favorites: safeData.favorites ?? defaultAppData.favorites,
+  };
+}
+
+export function loadAppData(): AppData {
+  if (typeof window === "undefined") return defaultAppData;
 
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as AppData;
+    if (!raw) return defaultAppData;
+    return normalizeAppData(JSON.parse(raw) as Partial<AppData>);
   } catch {
-    return null;
+    return defaultAppData;
   }
 }
 
 export function saveAppData(data: AppData) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const normalized = normalizeAppData(data);
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+  window.dispatchEvent(new Event(APP_DATA_EVENT));
 }
 
 export function createId(prefix: string) {

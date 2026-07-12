@@ -7,7 +7,7 @@ export async function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.id }));
 }
 
-export function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export function generateMetadata() {
   return {
     title: "Ferramenta",
     description: "Ficha detalhada de uma ferramenta de IA com avaliação, prós, contras e alternativas.",

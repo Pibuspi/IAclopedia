@@ -1,253 +1,64 @@
 # IAclopédia
 
-Versão: 1.0
+Plataforma brasileira para explorar, comparar e aprender sobre Inteligência Artificial com clareza, beleza e velocidade.
 
-Autor: Pietro Rainone Bruneli
+## Visão
 
----
+A IAclopédia reúne ferramentas, comparativos, notícias, vídeos, prompts e conteúdos curados para ajudar qualquer pessoa a encontrar a melhor solução de IA para cada necessidade.
 
-# Visão
+## Objetivo principal
 
-A IAclopédia será a maior plataforma brasileira especializada em Inteligência Artificial.
+- Mostrar rapidamente o que cada ferramenta faz
+- Facilitar comparação entre opções populares
+- Organizar o conteúdo de IA de forma acessível para iniciantes e profissionais
+- Criar uma base sólida para crescer em conteúdo, comunidade e monetização
 
-Ela NÃO é apenas um diretório de ferramentas.
+## Stack principal
 
-Ela é uma plataforma completa para pesquisar, comparar, aprender e descobrir tudo relacionado à IA.
-
-O objetivo é se tornar a principal referência em Inteligência Artificial para usuários iniciantes, intermediários e profissionais.
-
-Todo desenvolvimento deve priorizar qualidade, organização, velocidade e escalabilidade.
-
----
-
-# Missão
-
-Ajudar qualquer pessoa a encontrar a melhor Inteligência Artificial para qualquer necessidade.
-
----
-
-# Filosofia
-
-Sempre responder:
-
-• Qual ferramenta usar?
-• Quando usar?
-• Quando NÃO usar?
-• Vale a pena?
-• Existem alternativas?
-• Como ela se compara às concorrentes?
-
-Cada página deve responder essas perguntas.
-
----
-
-# Público
-
-• Estudantes
-• Programadores
-• Designers
-• Criadores de conteúdo
-• Empresas
-• Pesquisadores
-• Profissionais de Marketing
-• Curiosos sobre IA
-
----
-
-# Tecnologias
-
-Frontend
-
-- Next.js
+- Next.js 16
+- React 19
 - TypeScript
 - Tailwind CSS
-- shadcn/ui
 - Lucide Icons
 
-Backend
-
-- Next.js API Routes
-- Supabase (futuramente)
-
-Banco
-
-Inicialmente JSON.
-
-Posteriormente PostgreSQL (Supabase).
-
-Deploy
-
-GitHub
-GitHub Pages (temporariamente)
-Posteriormente Vercel.
-
----
-
-# Arquitetura
-
-Sempre utilizar arquitetura por componentes.
-
-Nunca criar arquivos gigantes.
-
-Separar:
-
-components/
-
-features/
-
-hooks/
-
-lib/
-
-services/
-
-types/
-
-utils/
-
-data/
-
-app/
-
-Cada componente deve possuir apenas uma responsabilidade.
-
----
-
-# Organização
-
-Sempre utilizar:
-
-TypeScript
-
-Interfaces
-
-Componentes reutilizáveis
-
-Código limpo
-
-Responsabilidade única
-
-Funções pequenas
-
-Nunca repetir código.
-
----
-
-# Convenções
-
-Sempre utilizar:
-
-camelCase para variáveis
-
-PascalCase para componentes
-
-kebab-case para rotas
-
-Interfaces iniciando com I
-
-Exemplo:
-
-ITool
-
-INews
-
-ICategory
-
----
-
-# Nunca utilizar
-
-JavaScript puro
-
-any
-
-Código duplicado
-
-CSS separado
-
-Estilos inline
-
-Dados fixos espalhados
-
-Funções enormes
-
-Arquivos maiores que 300 linhas quando possível.
-
----
-
-# UX/UI
-
-Inspirar-se em:
-
-Apple
-
-Linear
-
-Notion
-
-Vercel
-
-GitHub
-
-OpenAI
-
-Interface limpa.
-
-Muito espaço em branco.
-
-Sem exageros.
-
-Sem efeitos desnecessários.
-
-Dark Mode obrigatório.
-
-Responsivo.
-
----
-
-# Cores
-
-Background
-
-#09090B
-
-Texto
-
-Branco
-
-Primária
-
-Azul
-
-Secundária
-
-Roxo
-
-Sucesso
-
-Verde
-
-Erro
-
-Vermelho
-
-Aviso
-
-Amarelo
-
-Nunca utilizar muitas cores.
-
----
-
-# Tipografia
-
-Fonte moderna.
-
-Hierarquia clara.
-
-Textos grandes.
-
-Boa legibilidade.
+## Começar rapidamente
+
+1. Instale as dependências:
+   - npm install
+2. Inicie o ambiente de desenvolvimento:
+   - npm run dev
+3. Faça o build de produção:
+   - npm run build
+4. Valide lint e build:
+   - npm run verify
+
+## Estrutura do projeto
+
+- src/app: páginas do site
+- src/components: componentes reutilizáveis
+- src/lib: dados e conteúdo compartilhado
+- public: assets estáticos
+
+## Fluxo de Git
+
+- Branch principal: master
+- Antes de enviar alterações, rode:
+  - npm run verify
+- Para conferir o estado do repositório:
+  - git status
+  - git branch
+
+## Deploy
+
+O projeto está preparado para exportação estática e funciona bem para hospedagem com GitHub Pages, Vercel e plataformas similares.
+
+## Checklist de qualidade
+
+- Contraste claro em modo escuro e claro
+- Texto sempre legível sobre fundo
+- Landing page com explicação direta do valor do projeto
+- Conteúdo organizado e fácil de navegar
+- Build e lint funcionando antes de publicar
 
 ---
 

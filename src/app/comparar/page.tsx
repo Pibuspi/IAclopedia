@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { defaultAppData, type Tool } from "@/lib/app-data";
+import { defaultAppData } from "@/lib/app-data";
 
 export default function ComparePage() {
   const [leftId, setLeftId] = useState(defaultAppData.tools[0].id);
