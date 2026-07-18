@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, Compass, Newspaper, Sparkles, Video } from "lucide-react";
-import { categories, comparatives, featuredTools, posts, videos } from "@/lib/content";
+import { ArrowRight, Compass, Sparkles, Video } from "lucide-react";
+import { comparatives, featuredTools } from "@/lib/content";
+import RankingWidget from "@/components/ranking-widget";
+import HomeVideos from "@/components/home-videos";
 
 const quickHighlights = [
   { title: "Ferramentas escolhidas", text: "Compare preço, nota e uso real para encontrar a melhor IA para cada tarefa." },
   { title: "Comparativos rápidos", text: "Entenda diferenças entre opções populares sem perder tempo em pesquisas dispersas." },
-  { title: "Conteúdo útil", text: "Prompts, notícias e vídeos para aprender mais e aplicar hoje mesmo." },
+  { title: "Conteúdo útil", text: "Prompts e vídeos para aprender mais e aplicar hoje mesmo." },
 ];
 
 export default function Home() {
@@ -22,7 +24,7 @@ export default function Home() {
               Encontre a melhor IA para cada tarefa, sem perder tempo.
             </h1>
             <p className="mt-6 text-lg leading-8 text-[color:var(--muted)] sm:text-xl">
-              A IAclopédia reúne ferramentas, comparativos, notícias, vídeos e prompts em um lugar organizado para você decidir com mais segurança.
+              A IAclopédia reúne ferramentas, comparativos, vídeos e prompts em um lugar organizado para você decidir com mais segurança.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/ferramentas" className="inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--accent)] px-5 py-3 font-medium text-[color:var(--background)] transition hover:brightness-110">
@@ -36,15 +38,8 @@ export default function Home() {
           </div>
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-[var(--shadow)]">
-            <p className="text-sm uppercase tracking-[0.24em] text-[color:var(--accent)]">O que você encontra</p>
-            <div className="mt-5 space-y-3">
-              {quickHighlights.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] p-4">
-                  <h2 className="font-semibold text-[color:var(--foreground)]">{item.title}</h2>
-                  <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{item.text}</p>
-                </div>
-              ))}
-            </div>
+            <p className="text-sm uppercase tracking-[0.24em] text-[color:var(--accent)]">Em Alta</p>
+            <RankingWidget />
             <Link href="/ferramentas" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">
               Ver ferramentas em destaque
               <ArrowRight className="h-4 w-4" />
@@ -70,7 +65,7 @@ export default function Home() {
               </div>
               <h3 className="mt-6 text-xl font-semibold text-[color:var(--foreground)]">{tool.name}</h3>
               <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{tool.description}</p>
-              <Link href={`/ferramentas/${tool.id}`} className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--foreground)] transition hover:text-[color:var(--accent)]">
+              <Link href={`/ferramentas/detalhes?id=${tool.id}`} className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--foreground)] transition hover:text-[color:var(--accent)]">
                 Ver detalhes
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -79,47 +74,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {categories.slice(0, 8).map((category) => (
-            <Link key={category.slug} href={`/categorias#${category.slug}`} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] p-5 shadow-sm transition hover:bg-[color:var(--surface-muted)]">
-              <div className="text-xl text-[color:var(--accent)]">{category.icon}</div>
-              <h3 className="mt-3 font-medium text-[color:var(--foreground)]">{category.name}</h3>
-              <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">Guias e ferramentas para {category.name.toLowerCase()}.</p>
-            </Link>
-          ))}
-        </div>
-      </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
+
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-2 text-cyan-300">
+          <div className="mb-5 flex items-center gap-2 text-[color:var(--accent)]">
             <Video className="h-5 w-5" />
             <p className="text-sm uppercase tracking-[0.24em]">Vídeos</p>
           </div>
-          <div className="space-y-4">
-            {videos.slice(0, 2).map((video) => (
-              <div key={video.slug} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] p-4">
-                <h3 className="font-medium text-[color:var(--foreground)]">{video.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{video.summary}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-2 text-cyan-300">
-            <Newspaper className="h-5 w-5" />
-            <p className="text-sm uppercase tracking-[0.24em]">Notícias</p>
-          </div>
-          <div className="space-y-4">
-            {posts.slice(0, 2).map((post) => (
-              <div key={post.slug} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] p-4">
-                <h3 className="font-medium text-[color:var(--foreground)]">{post.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{post.excerpt}</p>
-              </div>
-            ))}
-          </div>
+          <HomeVideos />
         </div>
       </section>
 
@@ -129,12 +92,12 @@ export default function Home() {
             <p className="text-sm uppercase tracking-[0.24em] text-[color:var(--muted)]">Comparativos rápidos</p>
             <h2 className="mt-2 text-2xl font-semibold text-[color:var(--foreground)]">Veja as diferenças com rapidez</h2>
           </div>
-          <Link href="/comparativos" className="text-sm text-cyan-300 transition hover:text-cyan-200">Abrir todos</Link>
+          <Link href="/comparativos" className="text-sm text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">Abrir todos</Link>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           {comparatives.slice(0, 3).map((item) => (
             <div key={item.slug} className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
-              <div className="flex items-center gap-2 text-cyan-300">
+              <div className="flex items-center gap-2 text-[color:var(--accent)]">
                 <Compass className="h-5 w-5" />
                 <p className="text-sm uppercase tracking-[0.24em]">Comparativo</p>
               </div>

@@ -683,3 +683,6 @@ Legenda
 [ ] Tradução para inglês
 
 [ ] Tradução para espanhol
+
+
+-- deixar cor das letras mais clara. modo escuro, troca de feramenta em comparacao invisivel. excluir blog. acrescentar thumb e link do video.

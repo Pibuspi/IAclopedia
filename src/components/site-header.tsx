@@ -7,11 +7,9 @@ import { useTheme } from "@/components/theme-provider";
 const links = [
   { label: "Início", href: "/" },
   { label: "Ferramentas", href: "/ferramentas" },
-  { label: "Categorias", href: "/categorias" },
   { label: "Comparar", href: "/comparar" },
   { label: "Vídeos", href: "/videos" },
   { label: "Prompts", href: "/prompts" },
-  { label: "Blog", href: "/blog" },
   { label: "Admin", href: "/admin" },
 ];
 

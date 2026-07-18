@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Search, SlidersHorizontal, Sparkles, Star } from "lucide-react";
+import { ArrowRight, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { APP_DATA_EVENT, defaultAppData, loadAppData, type Tool } from "@/lib/app-data";
 
 export default function ToolsPage() {
@@ -11,13 +11,11 @@ export default function ToolsPage() {
   const [category, setCategory] = useState("Todas");
   const [price, setPrice] = useState("Todos");
   const [sort, setSort] = useState("rating");
-  const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
     const syncData = () => {
       const data = loadAppData();
       setTools(data.tools);
-      setFavorites(data.favorites || []);
     };
 
     syncData();
@@ -46,7 +44,7 @@ export default function ToolsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="max-w-3xl rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
-        <p className="text-sm uppercase tracking-[0.24em] text-cyan-300">Ferramentas</p>
+        <p className="text-sm uppercase tracking-[0.24em] text-[color:var(--accent)]">Ferramentas</p>
         <h1 className="mt-4 text-4xl font-semibold text-[color:var(--foreground)] sm:text-5xl">Encontre a IA certa em poucos segundos</h1>
         <p className="mt-6 text-lg leading-8 text-[color:var(--muted)]">Busque por nome, categoria, preço, nota e uso. Tudo organizado para comparar com clareza.</p>
       </div>
@@ -54,7 +52,7 @@ export default function ToolsPage() {
       <div className="mt-8 rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] p-4 shadow-sm sm:p-6">
         <div className="grid gap-3 md:grid-cols-[1.4fr_1fr_1fr_0.9fr]">
           <label className="flex items-center gap-2 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-4 py-3 text-sm text-[color:var(--foreground)]">
-            <Search className="h-4 w-4 text-cyan-300" />
+            <Search className="h-4 w-4 text-[color:var(--accent)]" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar ferramenta" className="w-full bg-transparent outline-none placeholder:text-[color:var(--muted)]" />
           </label>
           <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-4 py-3 text-sm text-[color:var(--foreground)]">
@@ -75,10 +73,10 @@ export default function ToolsPage() {
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)] px-4 py-3 text-sm text-[color:var(--muted)]">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="h-4 w-4 text-cyan-300" />
+          <SlidersHorizontal className="h-4 w-4 text-[color:var(--accent)]" />
           <span>{filteredTools.length} ferramentas encontradas</span>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-500/10 px-3 py-1 text-cyan-200">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--border)] bg-[color:var(--accent-soft)] px-3 py-1 text-[color:var(--accent-strong)]">
           <Sparkles className="h-4 w-4" />
           <span>Comparações rápidas e claras</span>
         </div>
@@ -88,19 +86,16 @@ export default function ToolsPage() {
         {filteredTools.map((tool) => (
           <article key={tool.id} className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
             <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-medium text-emerald-300">{tool.rating}/10</span>
-              <button onClick={() => setFavorites((current) => current.includes(tool.id) ? current.filter((id) => id !== tool.id) : [...current, tool.id])} className="rounded-full border border-[color:var(--border)] bg-[color:var(--surface-muted)] p-2 text-[color:var(--muted)] transition hover:text-amber-300">
-                <Star className={`h-4 w-4 ${favorites.includes(tool.id) ? "fill-amber-400 text-amber-400" : ""}`} />
-              </button>
+              <span className="rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-sm font-medium text-[color:var(--accent)]">{tool.rating}/10</span>
             </div>
             <h2 className="mt-6 text-xl font-semibold text-[color:var(--foreground)]">{tool.name}</h2>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{tool.tagline}</p>
-            <p className="mt-4 text-sm font-medium text-cyan-300">{tool.price}</p>
+            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{tool.description}</p>
+            <p className="mt-4 text-sm font-medium text-[color:var(--accent)]">{tool.price}</p>
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cyan-200">{tool.category}</span>
+              <span className="rounded-full border border-[color:var(--border)] bg-[color:var(--accent-soft)] px-3 py-1 text-xs uppercase tracking-[0.2em] text-[color:var(--accent-strong)]">{tool.category}</span>
               <span className="rounded-full border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-3 py-1 text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">{tool.freePlan}</span>
             </div>
-            <Link href={`/ferramentas/${tool.id}`} className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--foreground)] transition hover:text-cyan-300">
+            <Link href={`/ferramentas/detalhes?id=${tool.id}`} className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--foreground)] transition hover:text-[color:var(--accent)]">
               Ver detalhes
               <ArrowRight className="h-4 w-4" />
             </Link>

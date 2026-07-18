@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="border-t border-[color:var(--border)] bg-[color:var(--surface)]/95">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6 lg:flex-row lg:items-start lg:justify-between lg:px-8">
         <div className="max-w-md">
-          <div className="mb-4 flex items-center gap-3 text-white">
+          <div className="mb-4 flex items-center gap-3 text-[color:var(--foreground)]">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)]">
               <Sparkles className="h-5 w-5 text-[color:var(--accent)]" />
             </div>
@@ -16,7 +16,7 @@ export function SiteFooter() {
             </div>
           </div>
           <p className="text-sm leading-7 text-[color:var(--muted)]">
-            A maior plataforma brasileira de referência sobre ferramentas, modelos, comparativos, notícias e guias de IA.
+            A maior plataforma brasileira de referência sobre ferramentas, modelos, comparativos e guias de IA.
           </p>
         </div>
 
@@ -27,7 +27,6 @@ export function SiteFooter() {
               <li><Link href="/ferramentas" className="transition hover:text-[color:var(--foreground)]">Ferramentas</Link></li>
               <li><Link href="/comparativos" className="transition hover:text-[color:var(--foreground)]">Comparativos</Link></li>
               <li><Link href="/videos" className="transition hover:text-[color:var(--foreground)]">Vídeos</Link></li>
-              <li><Link href="/blog" className="transition hover:text-[color:var(--foreground)]">Blog</Link></li>
             </ul>
           </div>
           <div>

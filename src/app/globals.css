@@ -88,3 +88,9 @@ a {
 .text-muted {
   color: var(--muted);
 }
+
+select,
+option {
+  background-color: var(--surface);
+  color: var(--foreground);
+}

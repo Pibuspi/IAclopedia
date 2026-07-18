@@ -12,15 +12,9 @@ export type Tool = {
   cons: string[];
   bestFor: string[];
   notFor: string[];
-};
-
-export type NewsItem = {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  category: string;
-  publishedAt: string;
+  website?: string;
+  alternatives?: string[];
+  screenshots?: string[];
 };
 
 export type VideoItem = {
@@ -29,6 +23,7 @@ export type VideoItem = {
   slug: string;
   summary: string;
   tools: string[];
+  youtubeUrl?: string;
 };
 
 export type PromptItem = {
@@ -44,6 +39,7 @@ export type PromptItem = {
 
 export type RankingItem = {
   id: string;
+  toolId?: string;
   name: string;
   category: string;
   score: number;
@@ -52,7 +48,6 @@ export type RankingItem = {
 
 export type AppData = {
   tools: Tool[];
-  posts: NewsItem[];
   videos: VideoItem[];
   prompts: PromptItem[];
   ranking: RankingItem[];
@@ -60,6 +55,36 @@ export type AppData = {
 };
 
 export const APP_DATA_EVENT = "app-data-updated";
+
+export function getYoutubeVideoId(url: string | undefined): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url.trim());
+    const host = parsed.hostname.replace("www.", "");
+    if (host === "youtu.be") {
+      return parsed.pathname.split("/").filter(Boolean)[0] ?? null;
+    }
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      if (parsed.pathname === "/watch") {
+        return parsed.searchParams.get("v");
+      }
+      if (parsed.pathname.startsWith("/embed/")) {
+        return parsed.pathname.split("/embed/")[1]?.split("/")[0] ?? null;
+      }
+      if (parsed.pathname.startsWith("/shorts/")) {
+        return parsed.pathname.split("/shorts/")[1]?.split("/")[0] ?? null;
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function getYoutubeThumbnail(url: string | undefined): string | null {
+  const id = getYoutubeVideoId(url);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+}
 
 export const defaultAppData: AppData = {
   tools: [
@@ -77,6 +102,9 @@ export const defaultAppData: AppData = {
       cons: ["Menos acessível para iniciantes", "Plano pago mais forte"],
       bestFor: ["Desenvolvedores", "Equipes de produto"],
       notFor: ["Usuários casuais"],
+      website: "https://cursor.com",
+      alternatives: ["GitHub Copilot", "Windsurf"],
+      screenshots: ["Fluxo de edição com contexto do projeto", "Painel de revisão e chat integrado"],
     },
     {
       id: "chatgpt",
@@ -92,6 +120,9 @@ export const defaultAppData: AppData = {
       cons: ["Alguns recursos premium"],
       bestFor: ["Pesquisa", "Redação", "Automação"],
       notFor: ["Uso muito técnico puro"],
+      website: "https://chatgpt.com",
+      alternatives: ["Claude", "Gemini"],
+      screenshots: ["Chat multimodal com arquivos e imagens", "Fluxo de produtividade para escrita e análise"],
     },
     {
       id: "midjourney",
@@ -107,6 +138,9 @@ export const defaultAppData: AppData = {
       cons: ["Menos controle técnico", "Não é ideal para edição precisa"],
       bestFor: ["Design", "Branding", "Arte"],
       notFor: ["Edição documental"],
+      website: "https://www.midjourney.com",
+      alternatives: ["DALL·E", "Stable Diffusion"],
+      screenshots: ["Geração de imagens estilo cinematográfico", "Fluxo de ideação visual com prompts refinados"],
     },
     {
       id: "claude",
@@ -122,6 +156,9 @@ export const defaultAppData: AppData = {
       cons: ["Menos forte em multimodal"],
       bestFor: ["Leitura de documentos", "Análise"],
       notFor: ["Criação visual"],
+      website: "https://claude.ai",
+      alternatives: ["ChatGPT", "Gemini"],
+      screenshots: ["Resumo de documentos longos", "Análise de contexto e tom de voz"],
     },
     {
       id: "gemini",
@@ -137,32 +174,9 @@ export const defaultAppData: AppData = {
       cons: ["Menos consistente em alguns prompts"],
       bestFor: ["Pesquisa", "Workspace"],
       notFor: ["Trabalho artístico"],
-    },
-  ],
-  posts: [
-    {
-      id: "news-1",
-      title: "Melhores IAs para programar em 2026",
-      slug: "melhores-ias-para-programar",
-      excerpt: "Uma análise dos melhores ambientes de desenvolvimento com IA para codar mais rápido e com mais contexto.",
-      category: "Programação",
-      publishedAt: "2026-07-01",
-    },
-    {
-      id: "news-2",
-      title: "Como criar aplicativos usando IA sem perder qualidade",
-      slug: "como-criar-aplicativos-usando-ia",
-      excerpt: "Estratégias para construir produtos com mais velocidade e menos retrabalho.",
-      category: "Produto",
-      publishedAt: "2026-06-28",
-    },
-    {
-      id: "news-3",
-      title: "Novidades da semana: GPT-5.6, agentes e novos modelos",
-      slug: "novidades-da-semana",
-      excerpt: "Os lançamentos mais relevantes do mercado e o que muda para usuários e empresas.",
-      category: "Notícias",
-      publishedAt: "2026-06-25",
+      website: "https://gemini.google.com",
+      alternatives: ["ChatGPT", "Perplexity"],
+      screenshots: ["Integração com Workspace e Google", "Busca com contexto e respostas rápidas"],
     },
   ],
   videos: [
@@ -213,7 +227,6 @@ function normalizeAppData(data: Partial<AppData> | null | undefined): AppData {
   const safeData = data ?? {};
   return {
     tools: safeData.tools ?? defaultAppData.tools,
-    posts: safeData.posts ?? defaultAppData.posts,
     videos: safeData.videos ?? defaultAppData.videos,
     prompts: safeData.prompts ?? defaultAppData.prompts,
     ranking: safeData.ranking ?? defaultAppData.ranking,

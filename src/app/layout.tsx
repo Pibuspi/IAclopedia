@@ -21,14 +21,13 @@ export const metadata: Metadata = {
     template: "%s | IAclopédia",
   },
   description:
-    "A maior plataforma brasileira de referência sobre Inteligência Artificial, com comparativos, avaliações, vídeos, prompts e notícias.",
+    "A maior plataforma brasileira de referência sobre Inteligência Artificial, com comparativos, avaliações, vídeos e prompts.",
   keywords: [
     "IA",
     "inteligência artificial",
     "ferramentas de IA",
     "comparativos de IA",
     "prompts",
-    "notícias IA",
   ],
   openGraph: {
     title: "IAclopédia",
