@@ -78,11 +78,14 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)] p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-2 text-[color:var(--accent)]">
-            <Video className="h-5 w-5" />
-            <p className="text-sm uppercase tracking-[0.24em]">Vídeos</p>
+          <div className="mb-5 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-[color:var(--accent)]">
+              <Video className="h-5 w-5" />
+              <p className="text-sm uppercase tracking-[0.24em]">Vídeos</p>
+            </div>
+            <Link href="/videos" className="text-sm font-medium text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">Ver todos</Link>
           </div>
-          <HomeVideos />
+          <HomeVideos/>
         </div>
       </section>
 
@@ -92,7 +95,7 @@ export default function Home() {
             <p className="text-sm uppercase tracking-[0.24em] text-[color:var(--muted)]">Comparativos rápidos</p>
             <h2 className="mt-2 text-2xl font-semibold text-[color:var(--foreground)]">Veja as diferenças com rapidez</h2>
           </div>
-          <Link href="/comparativos" className="text-sm text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">Abrir todos</Link>
+          <Link href="/comparar" className="text-sm text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">Abrir todos</Link>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           {comparatives.slice(0, 3).map((item) => (

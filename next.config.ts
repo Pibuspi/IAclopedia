@@ -7,8 +7,6 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   basePath: "/IAclopedia",
-  // Removendo assetPrefix ou garantindo que seja igual ao basePath
-  // No GitHub Pages com subdiretório, o basePath costuma ser suficiente
 };
 
 export default nextConfig;

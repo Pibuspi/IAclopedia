@@ -446,7 +446,7 @@ Legenda
 
 [x] Tabela comparativa
 
-[ ] Ranking
+[x] Ranking
 
 ---
 
@@ -566,13 +566,13 @@ Legenda
 
 # Admin
 
-[ ] Dashboard
+[x] Dashboard
 
-[ ] Adicionar ferramenta
+[x] Adicionar ferramenta
 
-[ ] Editar ferramenta
+[x] Editar ferramenta
 
-[ ] Excluir ferramenta
+[x] Excluir ferramenta
 
 [ ] Adicionar notícia
 
@@ -581,18 +581,6 @@ Legenda
 [ ] Excluir notícia
 
 [ ] Aprovar conteúdo
-
----
-
-# Blog
-
-[x] Estrutura
-
-[x] Artigos
-
-[ ] Tags
-
-[x] SEO
 
 ---
 
@@ -683,6 +671,3 @@ Legenda
 [ ] Tradução para inglês
 
 [ ] Tradução para espanhol
-
-
--- deixar cor das letras mais clara. modo escuro, troca de feramenta em comparacao invisivel. excluir blog. acrescentar thumb e link do video.

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { Plus, Pencil, Trash2, Star, Copy, CheckCircle2, Sparkles, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, Star, Copy, CheckCircle2, Sparkles, Eye, Lock, LogOut } from "lucide-react";
 import { createId, getYoutubeThumbnail, loadAppData, saveAppData, type AppData, type PromptItem, type RankingItem, type Tool, type VideoItem } from "@/lib/app-data";
+import { checkAdminCredentials, isAdminAuthenticated, setAdminAuthenticated } from "@/lib/admin-auth";
 
 type Section = "tools" | "videos" | "prompts" | "ranking";
 type ContentItem = Tool | VideoItem | PromptItem | RankingItem;
@@ -55,12 +56,80 @@ const initialForm = {
   },
 };
 
+function AdminLogin({ onSuccess }: { onSuccess: () => void }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (checkAdminCredentials(username, password)) {
+      setAdminAuthenticated(true);
+      setError(null);
+      onSuccess();
+    } else {
+      setError("Usuário ou senha inválidos.");
+    }
+  }
+
+  return (
+    <section className="mx-auto flex max-w-md flex-col items-center px-4 py-24 sm:px-6 lg:px-8">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)]">
+        <Lock className="h-6 w-6 text-[color:var(--accent)]" />
+      </div>
+      <h1 className="mt-6 text-2xl font-semibold text-[color:var(--foreground)]">Acesso restrito</h1>
+      <p className="mt-2 text-center text-sm leading-6 text-[color:var(--muted)]">
+        Faça login para acessar o painel administrativo da IAclopédia.
+      </p>
+      <form onSubmit={handleSubmit} className="mt-8 w-full space-y-4">
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Usuário"
+          autoComplete="username"
+          className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Senha"
+          autoComplete="current-password"
+          className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]"
+        />
+        {error && <p className="text-sm text-red-500">{error}</p>}
+        <button
+          type="submit"
+          className="w-full rounded-full bg-[color:var(--foreground)] px-4 py-3 text-sm font-medium text-[color:var(--background)]"
+        >
+          Entrar
+        </button>
+      </form>
+    </section>
+  );
+}
+
+type AuthState = "checking" | "authenticated" | "guest";
+
 export function AdminPanel() {
+  const [authState, setAuthState] = useState<AuthState>("checking");
   const [data, setData] = useState<AppData>(() => loadAppData());
   const [activeSection, setActiveSection] = useState<Section>("tools");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setAuthState(isAdminAuthenticated() ? "authenticated" : "guest");
+    }, 0);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  function handleLogout() {
+    setAdminAuthenticated(false);
+    setAuthState("guest");
+  }
 
   useEffect(() => {
     saveAppData(data);
@@ -316,6 +385,14 @@ export function AdminPanel() {
     return "";
   }
 
+  if (authState === "checking") {
+    return <section className="mx-auto max-w-7xl px-4 py-24 text-center text-sm text-[color:var(--muted)]">Carregando…</section>;
+  }
+
+  if (authState === "guest") {
+    return <AdminLogin onSuccess={() => setAuthState("authenticated")} />;
+  }
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -334,6 +411,10 @@ export function AdminPanel() {
           <button onClick={startCreate} className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-[color:var(--accent-soft)] px-4 py-2 text-sm font-medium text-[color:var(--accent)]">
             <Plus className="h-4 w-4" />
             Novo {sectionTitle}
+          </button>
+          <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-2 text-sm text-[color:var(--muted)]">
+            <LogOut className="h-4 w-4" />
+            Sair
           </button>
         </div>
       </div>
@@ -405,7 +486,11 @@ export function AdminPanel() {
               <input value={form.tool.category} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, category: e.target.value } }))} placeholder="Categoria" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
               <input value={form.tool.company} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, company: e.target.value } }))} placeholder="Empresa" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
               <input value={form.tool.price} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, price: e.target.value } }))} placeholder="Preço" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
-              <input value={form.tool.freePlan} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, freePlan: e.target.value } }))} placeholder="Plano gratuito" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
+              <select value={form.tool.freePlan} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, freePlan: e.target.value } }))} className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]">
+                <option value="">Plano gratuito?</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
               <input type="number" value={form.tool.rating} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, rating: Number(e.target.value) } }))} placeholder="Nota" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
               <textarea value={form.tool.description} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, description: e.target.value } }))} placeholder="Descrição" className="min-h-24 w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />
               <input value={form.tool.pros} onChange={(e) => setForm((current) => ({ ...current, tool: { ...current.tool, pros: e.target.value } }))} placeholder="Prós (separados por vírgula)" className="w-full rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-4 py-3 text-sm text-[color:var(--foreground)]" />

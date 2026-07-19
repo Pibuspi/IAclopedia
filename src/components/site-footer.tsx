@@ -25,7 +25,7 @@ export function SiteFooter() {
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[color:var(--foreground)]">Explorar</h3>
             <ul className="space-y-2">
               <li><Link href="/ferramentas" className="transition hover:text-[color:var(--foreground)]">Ferramentas</Link></li>
-              <li><Link href="/comparativos" className="transition hover:text-[color:var(--foreground)]">Comparativos</Link></li>
+              <li><Link href="/comparar" className="transition hover:text-[color:var(--foreground)]">Comparar</Link></li>
               <li><Link href="/videos" className="transition hover:text-[color:var(--foreground)]">Vídeos</Link></li>
             </ul>
           </div>
@@ -34,7 +34,6 @@ export function SiteFooter() {
             <ul className="space-y-2">
               <li><Link href="/sobre" className="transition hover:text-[color:var(--foreground)]">Quem somos</Link></li>
               <li><Link href="/prompts" className="transition hover:text-[color:var(--foreground)]">Biblioteca de prompts</Link></li>
-              <li><Link href="/categorias" className="transition hover:text-[color:var(--foreground)]">Categorias</Link></li>
             </ul>
           </div>
         </div>
